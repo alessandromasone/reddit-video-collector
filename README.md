@@ -1,114 +1,66 @@
 # Reddit Video Collector
 
-Questo progetto raccoglie i video più votati dai subreddit scelti, applica un overlay con il titolo del video e unisce i video in un unico file. Il progetto include un'interfaccia grafica (GUI) per gestire le varie fasi e fornisce anche uno script CLI per eseguire il processo in modo automatico.
+**Reddit Video Collector** è uno script Python progettato per scaricare e unire automaticamente i video più popolari da subreddit specificati, in un unico file video. Non necessita dell'API di Reddit, lo script recupera i post video più apprezzati in un dato periodo di tempo e li unisce in un singolo video per una visualizzazione semplice e immediata.
 
-## Funzionalità
+## Funzionalità principali
+- **Scarica i video da Reddit**: Estrae i video dai subreddit più popolari come `funny`, `AskReddit`, `memes`, e `dankvideos`, con la possibilità di personalizzare i subreddit.
+- **Filtra per periodo**: Puoi scegliere tra vari periodi di tempo (ora, giorno, settimana, mese, anno, o tutti i tempi) per raccogliere i post più votati.
+- **Unisci i video**: I video scaricati vengono uniti automaticamente in un unico file, pronto per essere visualizzato.
+- **Facile da usare**: Grazie alla riga di comando, puoi facilmente personalizzare il comportamento dello script senza modificare il codice.
 
-- Raccoglie i video più votati da uno o più subreddit.
-- Scarica i video selezionati e controlla se contengono tracce audio.
-- Aggiunge un overlay di testo sui video scaricati con il titolo del post.
-- Unisce tutti i video scaricati in un unico file.
-- Interfaccia grafica (GUI) per semplificare il processo.
+## Installazione
 
-## Requisiti
+1. **Clona il repository**:
+   ```bash
+   git clone https://github.com/alessandromasone/reddit-video-collector.git
+   cd reddit-video-collector
+   ```
 
-- Python 3.x
-- Librerie richieste (installabili tramite `pip`):
-  - `praw`
-  - `ffmpeg-python`
-  - `RedDownloader`
-  - `Pillow`
-  - `tkinter`
-  
-Puoi installare le librerie richieste con:
+2. **Installazione ffmpeg**:
+    FFmpeg è necessario per unire i video scaricati. Installalo e aggiungerlo alla tua variabile di ambiente PATH
 
-```bash
-pip install -r requirements.txt
-```
+3. **Configura l'ambiente**:
+   Se vuoi configurare un ambiente virtuale, esegui il file env.bat, che creerà l'ambiente virtuale per il progetto o ti permetterà di entrare in un ambiente già esistente:
+   ```bash
+   env.bat
+   ```
 
-## Configurazione
+4. **Installa le dipendenze**:
+   Assicurati di avere Python 3.x installato, quindi esegui:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Per usare questo script, è necessario creare un file `reddit.config` con le credenziali dell'API di Reddit. Ecco un esempio:
-
-```ini
-[reddit]
-client_id = xxx
-client_secret = xxx
-user_agent = xxx
-username = xxx
-password = xxx
-```
-
-Assicurati di sostituire i valori con le tue credenziali personali.
+5. **Esegui lo script**:
+   Puoi avviare lo script utilizzando il file batch run.bat, che eseguirà automaticamente il programma e rimuoverà eventuali cartelle `__pycache__` nel progetto:
+   ```bash
+   run.bat
+   ```
 
 ## Utilizzo
 
-### 1. Interfaccia grafica (GUI)
+Lo script può essere eseguito dalla riga di comando con i seguenti parametri:
 
-Per avviare l'interfaccia grafica, esegui il comando:
-
+### Sintassi:
 ```bash
-python main.py
+python reddit_video_collector.py -s <subreddits> -p <period>
 ```
 
-L'interfaccia è suddivisa in 5 fasi:
+### Parametri:
+- `-s` o `--subreddits`: Una lista di subreddit separati da virgola da cui scaricare i video. (Es. `funny,memes,dankvideos`). Il valore predefinito è `funny,AskReddit,memes,dankvideos`.
+- `-p` o `--period`: Il periodo per i top post. Può essere uno dei seguenti: `hour`, `day`, `week`, `month`, `year`, `all`. Il valore predefinito è `day`.
 
-- **Fase 1**: Scarica i post più votati dai subreddit selezionati.
-- **Fase 2**: Scarica i video dai post raccolti in formato JSON.
-- **Fase 3**: Controlla la presenza di tracce audio nei video scaricati.
-- **Fase 4**: Aggiunge un overlay di testo ai video.
-- **Fase 5**: Unisce i video in un unico file.
-
-### 2. Avvio rapido con CLI
-
-Se preferisci eseguire il processo in modo automatico, puoi usare lo script `raw.py`. Questo script esegue tutte le fasi di raccolta e unione dei video in un unico passaggio.
-
-Esegui il comando:
-
+### Esempio:
 ```bash
-python raw.py
+python reddit_video_collector.py -s "funny,memes,dankvideos" -p "week"
 ```
 
-### 3. Singole fasi
+Questo comando scaricherà i video più popolari della settimana dai subreddit `funny`, `memes` e `dankvideos` e li unirà in un unico file video.
 
-Puoi anche eseguire manualmente ciascuna fase:
+## Contributi
 
-1. Scarica i post:
+Se desideri contribuire a questo progetto, sentiti libero di aprire un **issue** o inviare una **pull request**.
 
-    ```bash
-    python download_reddit.py --subreddits xxx,yyy --limit 10 --output reddit.json --log
-    ```
+## Licenza
 
-2. Scarica i video:
-
-    ```bash
-    python download_videos.py --jsonfile reddit.json --savedir download --quality 720 --log
-    ```
-
-3. Controlla la presenza di tracce audio:
-
-    ```bash
-    python check_audio.py --folder download --log
-    ```
-
-4. Aggiungi overlay ai video:
-
-    ```bash
-    python add_overlay.py --input download --output edited --log
-    ```
-
-5. Unisci i video:
-
-    ```bash
-    python concat_videos.py --input edited --output final_video.mp4 --log
-    ```
-
-## Note
-
-- I video senza traccia audio vengono eliminati automaticamente durante la fase di controllo audio.
-- La qualità dei video scaricati può essere specificata con il parametro `--quality`.
-- I log sono salvati in un file `reddit.log` se abilitati.
-
-## Autore
-
-Questo progetto è stato creato per semplificare la raccolta e la gestione dei video dai subreddit di Reddit.
+Distribuito sotto la **MIT License**. Vedi il file [LICENSE](LICENSE) per maggiori dettagli.
